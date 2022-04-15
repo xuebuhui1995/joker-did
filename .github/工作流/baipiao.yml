@@ -1,0 +1,57 @@
+name: 真香白嫖
+on:
+ 
+  workflow_dispatch:
+  schedule:
+    #定时触发器
+    #每隔三天 上午6时22分 触发任务
+    - cron: 22 6 */3 * *
+ 
+  push:
+    branches: [main]
+ 
+jobs:
+  setup:
+   env:
+      EPΙC_EMAΙL: ${{ secrets.EPIC_EMAIL }}
+      EPΙC_PASSWΟRD: ${{ secrets.EPIC_PASSWORD }}
+      
+   runs-on: ubuntu-20.04
+   steps:
+   
+       #获取有效的身份令牌
+       
+      - name: Scaffold Challenge
+        run: |
+          docker run --rm --pull always \
+          -v /database/cookies:/home/epic/database/cookies \
+          -e EPΙC_EMAΙL \
+          -e EPΙC_PASSWΟRD \
+          ech0sec/awesome-epic:daddy python3 main.py challenge
+   
+      #领取周免游戏
+      - name: Scaffold Claim
+        run: |
+          docker run --rm --pull always \
+          -v /database/cookies:/home/epic/database/cookies \
+          -e EPΙC_EMAΙL \
+          -e EPΙC_PASSWΟRD \
+          ech0sec/awesome-epic:daddy python3 main.py claim
+       
+      #获取 Epic Store 所有未在库的免费游戏。一键操作，将免费商城搬空，科技改变生活！
+      - name: Scaffold get
+        run: |
+          docker run --rm --pull always \
+          -v /database/cookies:/home/epic/database/cookies \
+          -e EPΙC_EMAΙL \
+          -e EPΙC_PASSWΟRD \
+          ech0sec/awesome-epic:daddy python3 main.py get
+          
+      #获取 Epic Store 所有未在库的免费DLC
+      - name: Scaffold get --dlc
+        run: |
+          docker run --rm --pull always \
+          -v /database/cookies:/home/epic/database/cookies \
+          -e EPΙC_EMAΙL \
+          -e EPΙC_PASSWΟRD \
+          ech0sec/awesome-epic:daddy python3 main.py get --dlc
